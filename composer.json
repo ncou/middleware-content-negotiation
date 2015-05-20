@@ -1,0 +1,39 @@
+{
+  "name": "phapi/middleware-content-negotiation",
+  "description": "Content Negotiation Middleware used by the Phapi Framework.",
+  "keywords": [
+    "middleware", "content negotiation", "phapi"
+  ],
+  "version": "1.0.0",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "homepage": "http://phapi.github.io",
+  "authors": [
+    {
+      "name": "Peter Ahinko",
+      "email": "peter@ahinko.se",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "phapi/contract": "dev-master",
+    "phapi/exception": "dev-master",
+    "psr/http-message": "1.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.6.*",
+    "mockery/mockery": "0.9.*",
+    "codeclimate/php-test-reporter": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "Phapi\\Middleware\\ContentNegotiation\\": "src/Phapi/Middleware/ContentNegotiation/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Phapi\\Tests\\Middleware\\ContentNegotiation\\": "tests/Phapi/Middleware/ContentNegotiation"
+    }
+  }
+}
