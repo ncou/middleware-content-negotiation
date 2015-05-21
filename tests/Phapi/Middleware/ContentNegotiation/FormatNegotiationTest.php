@@ -26,7 +26,7 @@ class FormatNegoitationTest extends TestCase
         $request->shouldReceive('hasHeader')->with('Accept')->andReturn(true);
         $request->shouldReceive('getHeaderLine')->with('Accept')->andReturn('application/json;version=2');
         $request->shouldReceive('withAttribute')->withArgs(['Accept', 'application/json'])->andReturnSelf();
-        $request->shouldReceive('withAttribute')->withArgs(['AcceptParameters', [ 'version' => 2]])->andReturnSelf();
+        $request->shouldReceive('withAttribute')->withArgs(['Accept-Parameters', [ 'version' => 2]])->andReturnSelf();
 
         $response = \Mockery::mock('Psr\Http\Message\ResponseInterface');
         $response->shouldReceive('withHeader')->withArgs(['Content-Type', 'application/json;charset=utf-8']);
@@ -338,7 +338,7 @@ class FormatNegoitationTest extends TestCase
         $request->shouldReceive('getHeaderLine')->with('Accept')->andReturn('application/xml');
 
         $request->shouldReceive('withAttribute')->withArgs(['Accept', 'application/json'])->andReturnSelf();
-        $request->shouldReceive('withAttribute')->withArgs(['AcceptParameters', [ 'version' => 2]])->andReturnSelf();
+        $request->shouldReceive('withAttribute')->withArgs(['Accept-Parameters', [ 'version' => 2]])->andReturnSelf();
 
         $response = \Mockery::mock('Psr\Http\Message\ResponseInterface');
 
@@ -366,7 +366,7 @@ class FormatNegoitationTest extends TestCase
         $request->shouldReceive('getHeaderLine')->with('Accept')->andReturn('application/xml');
 
         $request->shouldReceive('withAttribute')->withArgs(['Accept', 'application/json'])->andReturnSelf();
-        $request->shouldReceive('withAttribute')->withArgs(['AcceptParameters', [ 'version' => 2]])->andReturnSelf();
+        $request->shouldReceive('withAttribute')->withArgs(['Accept-Parameters', [ 'version' => 2]])->andReturnSelf();
 
         $response = \Mockery::mock('Psr\Http\Message\ResponseInterface');
         $response->shouldReceive('withHeader')->withArgs(['Content-Type', 'application/json']);

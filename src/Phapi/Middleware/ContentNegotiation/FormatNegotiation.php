@@ -70,7 +70,7 @@ class FormatNegotiation implements Middleware
 
             // If an Accept header field is present, and if the server cannot send a response
             // which is acceptable according to the combined Accept field value, then the server
-            // SHOULD send a 406 (not acceptable) response.
+            // SHOULD return a 406 (not acceptable) response.
             if ($best === null) {
                 // We must set the mime type before throwing the exception so that the correct serializer
                 // is triggered to serialize the error message.
@@ -89,23 +89,37 @@ class FormatNegotiation implements Middleware
         // Save result
         $request = $request->withAttribute('Accept', $best['value']);
 
-        // Check if we have a charset configured
-        $charset = '';
-        if (isset($this->container['charset'])) {
-            // Add charset to the content type header
-            $charset = ';charset='. $this->container['charset'];
-        }
+        // Prepare charset
+        $charset = $this->prepareCharsetHeaderString();
         // Set response content type header
         $response = $response->withHeader('Content-Type', $best['value'] . $charset);
 
         // Set extra params
         if (isset($best['parameters'])) {
             // Set parameters array as attribute
-            $request = $request->withAttribute('AcceptParameters', $best['parameters']);
+            $request = $request->withAttribute('Accept-Parameters', $best['parameters']);
         }
 
         // Call next middleware
         return $next($request, $response, $next);
+    }
+
+    /**
+     * Prepare and return a string prepared to be used as part of
+     * the Content-Type header on the response object.
+     *
+     * @return string
+     */
+    private function prepareCharsetHeaderString()
+    {
+        // Check if we have a charset configured
+        $charset = '';
+        if (isset($this->container['charset'])) {
+            // Add charset to the content type header
+            $charset = ';charset='. $this->container['charset'];
+        }
+
+        return $charset;
     }
 
     /**
@@ -200,38 +214,54 @@ class FormatNegotiation implements Middleware
             // the mime type and maybe some parameters
             $parts = array_map('trim', explode(';', $range));
 
-            // Get and unset the mime type
-            $mimeType = $parts[0];
-            unset($parts[0]);
+            // Parse the parts of the range
+            $support = $this->parseParts($parts);
 
-            // Set default quality to 1 since the HTTP/1.1 specification says that if no
-            // quality is provided it defaults to 1
-            $support = [ 'value' => $mimeType, 'quality' => (float) 1 ];
-
-            // Loop through the parts
-            foreach ($parts as $part) {
-                // Save all params
-                $param = explode('=', $part);
-                // Make sure we exploded the string
-                if (isset($param[1])) {
-                    // Save param
-                    if ($param[0] === 'q') {
-                        $support['quality'] = (float) $param[1];
-                    } else {
-                        $support['parameters'][$param[0]] = $param[1];
-                    }
-                }
-            }
-
+            // Save current index
             $support['index'] = $index;
 
             // Save the result to the array with all supported mime types
             $supported[] = $support;
 
+            // Update index
             $index++;
         }
 
         return $supported;
+    }
+
+    /**
+     * Parse the different parts of the media range
+     *
+     * @param array $parts
+     * @return array
+     */
+    private function parseParts(array $parts = [])
+    {
+        // Get and unset the mime type
+        $mimeType = $parts[0];
+        unset($parts[0]);
+
+        // Set default quality to 1 since the HTTP/1.1 specification says that if no
+        // quality is provided it defaults to 1
+        $support = [ 'value' => $mimeType, 'quality' => (float) 1 ];
+
+        // Loop through the parts
+        foreach ($parts as $part) {
+            // Save all params
+            $param = explode('=', $part);
+            // Make sure we exploded the string
+            if (isset($param[1])) {
+                // Save param
+                if ($param[0] === 'q') {
+                    $support['quality'] = (float) $param[1];
+                } else {
+                    $support['parameters'][$param[0]] = $param[1];
+                }
+            }
+        }
+
+        return $support;
     }
 
     /**
