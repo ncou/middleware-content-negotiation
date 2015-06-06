@@ -1,6 +1,15 @@
 # Content Negotiation Middleware
 The Content Negotiation Middleware does exactly what the name indicates. It takes the <code>Accept</code> header and parses it, matches it against the list of supported mime types (registered by serializers) and finally sets the proper <code>Content-Type</code> header on the response object. It's also possible to get the negotiated mime type and parameters (if included) from the request object:
 
+## Installation
+This middleware is by default included in the [Phapi Framework](https://github.com/phapi/phapi) but if you need to install it it's available to install via [Packagist](https://packagist.org) and [Composer](https://getcomposer.org).
+
+```shell
+$ php composer.phar require phapi/middleware-content-negotiation:1.*
+```
+
+## Usage
+
 ```php
 <?php
 /*
