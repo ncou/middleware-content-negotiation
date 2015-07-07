@@ -2,7 +2,7 @@
 The Content Negotiation Middleware contains of one middleware designed to handle format negotiations. It takes the <code>Accept</code> header and parses it, matches it against the list of supported mime types (registered by serializers) and finally sets the proper <code>Content-Type</code> header on the response object.
 
 ## Installation
-This middleware is by default included in the [Phapi Framework](https://github.com/phapi/phapi) but if you need to install it it's available to install via [Packagist](https://packagist.org) and [Composer](https://getcomposer.org).
+This middleware is by default included in the [Phapi Framework](https://github.com/phapi/phapi-framework) but if you need to install it it's available to install via [Packagist](https://packagist.org) and [Composer](https://getcomposer.org).
 
 ```shell
 $ php composer.phar require phapi/middleware-content-negotiation:1.*
@@ -45,7 +45,7 @@ The middleware will throw a <code>406 NotAcceptable</code> if the requested mime
 If the requested mime type isn't supported the first mime type in the first registered serializers will be used to serialize the error message sent to the client.
 
 ## Phapi
-This middleware is a Phapi package used by the [Phapi Framework](https://github.com/phapi/phapi). The middleware are also [PSR-7](https://github.com/php-fig/http-message) compliant and implements the [Phapi Middleware Contract](https://github.com/phapi/contract).
+This middleware is a Phapi package used by the [Phapi Framework](https://github.com/phapi/phapi-framework). The middleware are also [PSR-7](https://github.com/php-fig/http-message) compliant and implements the [Phapi Middleware Contract](https://github.com/phapi/contract).
 
 ## License
 Content Negotiation Middleware is licensed under the MIT License - see the [license.md](https://github.com/phapi/middleware-content-negotiation/blob/master/license.md) file for details
