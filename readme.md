@@ -1,4 +1,9 @@
 # Content Negotiation Middleware
+
+[![Build status](https://img.shields.io/travis/phapi/middleware-content-negotiation.svg?style=flat-square)](https://travis-ci.org/phapi/middleware-content-negotiation)
+[![Code Climate](https://img.shields.io/codeclimate/github/phapi/middleware-content-negotiation.svg?style=flat-square)](https://codeclimate.com/github/phapi/middleware-content-negotiation)
+[![Test Coverage](https://img.shields.io/codeclimate/coverage/github/phapi/middleware-content-negotiation.svg?style=flat-square)](https://codeclimate.com/github/phapi/middleware-content-negotiation/coverage)
+
 The Content Negotiation Middleware contains of one middleware designed to handle format negotiations. It takes the <code>Accept</code> header and parses it, matches it against the list of supported mime types (registered by serializers) and finally sets the proper <code>Content-Type</code> header on the response object.
 
 ## Installation
