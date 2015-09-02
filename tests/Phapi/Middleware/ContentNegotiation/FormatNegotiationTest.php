@@ -330,6 +330,8 @@ class FormatNegoitationTest extends TestCase
         $container->shouldReceive('offsetExists')->with('acceptTypes')->andReturn(true);
         $container->shouldReceive('offsetGet')->with('acceptTypes')->andReturn(['application/json', 'text/json']);
         $container->shouldReceive('offsetSet')->withAnyArgs();
+        $container->shouldReceive('offsetExists')->with('charset')->andReturn(true);
+        $container->shouldReceive('offsetGet')->with('charset')->andReturn('utf-8');
         $middleware = new FormatNegotiation();
         $middleware->setContainer($container);
 
@@ -338,9 +340,9 @@ class FormatNegoitationTest extends TestCase
         $request->shouldReceive('getHeaderLine')->with('Accept')->andReturn('application/xml');
 
         $request->shouldReceive('withAttribute')->withArgs(['Accept', 'application/json'])->andReturnSelf();
-        $request->shouldReceive('withAttribute')->withArgs(['Accept-Parameters', [ 'version' => 2]])->andReturnSelf();
 
         $response = \Mockery::mock('Psr\Http\Message\ResponseInterface');
+        $response->shouldReceive('withHeader')->with('Content-Type', 'application/json;charset=utf-8')->andReturnSelf();
 
         $this->setExpectedException('Phapi\Exception\NotAcceptable', 'Can not send a response which is acceptable according to the Accept header.');
         $middleware(
