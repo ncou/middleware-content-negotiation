@@ -60,6 +60,9 @@ class FormatNegotiation implements Middleware
         // Get priorities
         $supported = $this->container['acceptTypes'];
 
+        // Prepare charset
+        $charset = $this->prepareCharsetHeaderString();
+
         // Make sure we have what we need to do the negotiation
         if ($request->hasHeader('Accept')) {
             // Get header
@@ -73,8 +76,9 @@ class FormatNegotiation implements Middleware
             // SHOULD return a 406 (not acceptable) response.
             if ($best === null) {
                 // We must set the mime type before throwing the exception so that the correct serializer
-                // is triggered to serialize the error message.
+                // is triggered to serialize the error message. Both on the request and response.
                 $this->container['latestRequest'] = $request->withAttribute('Accept', $supported[0]);
+                $this->container['latestResponse'] = $response->withHeader('Content-Type', $supported[0] . $charset);
 
                 throw new NotAcceptable(
                     'Can not send a response which is acceptable according to the Accept header. '.
@@ -89,8 +93,6 @@ class FormatNegotiation implements Middleware
         // Save result
         $request = $request->withAttribute('Accept', $best['value']);
 
-        // Prepare charset
-        $charset = $this->prepareCharsetHeaderString();
         // Set response content type header
         $response = $response->withHeader('Content-Type', $best['value'] . $charset);
 
